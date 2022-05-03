@@ -1,5 +1,3 @@
-from asyncio import subprocess
-from concurrent.futures import thread
 from image_data_generator import ImageDataGenerator, InitImageDataGenerator
 from json_reader import MatrixSettingsReader, InitImagesReader
 from json_writer import JsonWriter
@@ -8,6 +6,7 @@ from pathlib import Path
 from subprocess import PIPE, Popen
 from time import sleep
 import threading
+import signal
 
 PROCESS = str(Path(__file__, '..', '..', 'rpi-rgb-led-matrix', 'examples-api-use',
                    'image-example').resolve())
@@ -60,6 +59,15 @@ def main():
     t = threading.Thread(target=run, args=(
         PROCESS, matrix_settings, image_manager, order_manager))
     t.start()
+
+    def signal_handler(signal, frame):
+        print('You pressed Ctrl+C!')
+        t.running = False
+
+    signal.signal(signal.SIGINT, signal_handler)
+    print('Press Ctrl+C')
+    forever = threading.Event()
+    forever.wait()
 
 
 if __name__ == "__main__":
