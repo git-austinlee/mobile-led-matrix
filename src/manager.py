@@ -49,7 +49,7 @@ class OrderManager:
             pass
 
     def update_index(self) -> None:
-        if self.index >= len(self.order):
+        if self.index >= len(self.order) - 1:
             self.index = 0
         else:
             self.index += 1
