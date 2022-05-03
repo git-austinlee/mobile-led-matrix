@@ -61,11 +61,10 @@ def main():
     t.start()
 
     def signal_handler(signal, frame):
-        print('You pressed Ctrl+C!')
+        forever.set()
         t.running = False
 
     signal.signal(signal.SIGINT, signal_handler)
-    print('Press Ctrl+C')
     forever = threading.Event()
     forever.wait()
 

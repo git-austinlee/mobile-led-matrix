@@ -56,4 +56,5 @@ class OrderManager:
 
     def next(self) -> uuid:
         self.update_index()
+        print(self.index)
         return self.order[self.index]
