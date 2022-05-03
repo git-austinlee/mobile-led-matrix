@@ -6,20 +6,26 @@ class ImageManager:
     def __init__(self, images):
         self.images = images
 
-    def add_image(self, image_name: str, duration=10, visible=True) -> None:
-        self.images[image_name] = {"duration": duration, "visible": visible}
+    def add_image(self) -> None:
+        raise NotImplementedError
 
-    def delete_image(self, uuid: uuid):
-        try:
-            del self.images[uuid]
-        except KeyError:
-            pass
+    def delete_image(self, uuid: uuid) -> None:
+        del self.images[uuid]
 
     def get_image_full_path(self, uuid: uuid) -> Path:
         return Path(self.images[uuid]['location'], self.images[uuid]['name'])
 
-    def set_visible(self, image_name: str, visible: bool):
-        raise NotImplementedError
+    def get_duration(self, uuid: uuid) -> int:
+        return self.images[uuid]['duration']
+
+    def set_duration(self, uuid: uuid, duration: int) -> None:
+        self.images[uuid]['duration'] = duration
+
+    def get_visible(self, uuid: uuid) -> bool:
+        return self.images[uuid]['visible']
+
+    def set_visible(self, uuid: uuid, visible: bool) -> None:
+        self.images[uuid]['visible'] = visible
 
 
 class OrderManager:
@@ -30,11 +36,11 @@ class OrderManager:
     def append_order(self, image_uuid: uuid) -> None:
         self.order.append(image_uuid)
 
-    def set_full_order(self, new_order: list) -> None:
-        self.order = new_order
-
     def get_full_order(self) -> list:
         return self.order
+
+    def set_full_order(self, new_order: list) -> None:
+        self.order = new_order
 
     def remove_from_order(self, uuid) -> None:
         try:

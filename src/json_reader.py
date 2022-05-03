@@ -4,8 +4,12 @@ from pathlib import Path
 
 class JsonReader:
     def __init__(self, filepath):
-        with open(filepath) as fs:
+        self.filepath = filepath
+        with open(self.filepath) as fs:
             self.data = json.load(fs)
+
+    def re_read(self):
+        self.__init__(self.filepath)
 
 
 class MatrixSettingsReader(JsonReader):
